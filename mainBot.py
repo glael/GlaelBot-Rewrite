@@ -6,28 +6,43 @@ from EconomyBot import EconomyBot
 from GalgjeBot import GalgjeBot
 from GeneralBot import GeneralBot
 from BattleshipBot import BattleshipBot
+from RedditBot import RedditBot
+from MinesweeperBot import MinesweeperBot
 import asyncio
 import random
+import urllib.request
+import json
+import sqlite3
+import datetime
 
 bot = Bot(command_prefix="")
 economy_bot = EconomyBot(bot)
 galgje_bot = GalgjeBot(bot)
 general_bot = GeneralBot(bot)
 battleship_bot = BattleshipBot(bot)
+reddit_bot = RedditBot(bot, economy_bot)
+minesweeper_bot = MinesweeperBot(bot)
 
-
-
-
-
-
+conn = sqlite3.connect('/home/pi/Documents/glaelbot/stats.db')
 
 # -----------------------------------GENERAL STUFF----------------------------------------------------------------------
 @bot.event
 async def on_ready():
     await bot.change_presence(game=discord.Game(name="glael.ddns.net"))
     battleship_bot.generateEmoji()
+    minesweeper_bot.generateEmoji()
     print("starting...")
 
+def update_db(message):
+    cursor = conn.cursor()
+    now = datetime.datetime.now()
+    dateString = now.replace(microsecond=0, second=0, minute=now.minute-now.minute%5, hour=(now.hour+1)%24).isoformat()
+    cursor.execute('SELECT * FROM stats WHERE time==\'' + dateString + '\'')
+    if (cursor.fetchone() != None):
+        cursor.execute('UPDATE stats set amount = amount + 1 WHERE time == \'' + dateString + '\'')
+    else:
+        cursor.execute('INSERT INTO stats VALUES (\'' + dateString + '\', 1)')
+    conn.commit()
 
 @bot.event
 async def on_message(message):
@@ -37,6 +52,8 @@ async def on_message(message):
         return
     if message.channel.id in ["418130378243440645", "367274120930394112", "231823001912475648"] and len(message.content) > 0:		# process battleship commands
         await battleship_bot.evalMessage(message)
+    if message.content == "XD" or " XD" in message.content or "XD " in message.content:
+        await bot.send_message(message.channel, "*ECKSDEE")
     if "plop" in message.content.lower() or "kabouter" in message.content.lower():							# "plop" or "kabouter" => react with plopworst emoji
         await general_bot.add_reaction(message, "plopworst", "223911633682956290")
     if "(╯°□°）╯︵ ┻━┻" in message.content:												# tableflip => put table back
@@ -53,8 +70,17 @@ async def on_message(message):
         await general_bot.add_reaction(message, "reee", "231823001912475648")
     if "wifi" in message.content.lower():												# "wifi" => reply with feelsUhasseltMan emoji
         await general_bot.add_reaction(message, "FeelsUhasseltMan", "231823001912475648")
+    if "arch" in message.content.lower():
+        await general_bot.add_reaction(message, "arch", "231823001912475648")
+    if "gentoo" in message.content.lower():
+        await general_bot.add_reaction(message, "gentoo", "231823001912475648")
+    if "void" in message.content.lower():
+        await general_bot.add_reaction(message, "void", "231823001912475648")
+    if "owo" in message.content.lower() or "o wo" in message.content.lower() or "ow o" in message.content.lower() or "o w o" in message.content.lower():
+        await general_bot.add_reaction(message, "owo", "231823001912475648")
     if len(message.attachments) == 1 and "height" in message.attachments[0] and "width" in message.attachments[0] and (message.attachments[0]["filename"].endswith(".png") or message.attachments[0]["filename"].endswith(".jpg")):
         await general_bot.ifunny_test(message)												# check if ifunny logo is present (currently broken)
+    update_db(message)
     await bot.process_commands(message)
     return
 
@@ -71,11 +97,14 @@ async def on_reaction_add(reaction, user):
     elif len(reaction.message.embeds) == 1 and reaction.message.embeds[0]["title"] == "Galgje":
         await galgje_bot.user_reacted(reaction, user)
     # BLACKJACK
-    if len(reaction.message.embeds) == 1 and reaction.message.embeds[0]["title"] == "BlackJack" and (user.id != "338099908210851840" and user.id != "285157874479661058"):
+    elif len(reaction.message.embeds) == 1 and reaction.message.embeds[0]["title"] == "BlackJack" and (user.id != "338099908210851840" and user.id != "285157874479661058"):
         await economy_bot.reaction_added(reaction, user)
     # BATTLESHIP
-    if len(reaction.message.embeds) == 1 and reaction.message.embeds[0]["title"] == "Battleship: your waters.":
+    elif len(reaction.message.embeds) == 1 and reaction.message.embeds[0]["title"] == "Battleship: your waters.":
         await battleship_bot.evalReaction(reaction)
+    # REDDIT
+    elif len(reaction.message.embeds) == 1 and reaction.message.embeds[0]["title"] == "/r/(not)TheOnion?":
+        await reddit_bot.user_reacted(reaction, user)
     return
 
 
@@ -155,6 +184,12 @@ async def galgje(ctx, *args):
     await galgje_bot.galgje(ctx, *args)
 
 
+# ---------------------------------MINESWEEPER_BOT----------------------------------------------------------------------
+@bot.command(pass_context=True)
+async def MineSweeper(ctx, *args):
+    await minesweeper_bot.print_minefield(ctx, *args)
+
+
 # ---------------------------------BATTLESHIP_BOT-----------------------------------------------------------------------
 @bot.command(pass_context=True)
 async def BattleShip(ctx, *args):
@@ -165,6 +200,11 @@ async def BattleShip(ctx, *args):
 async def ResetBattleShip(ctx, *args):
     await battleship_bot.resetBattleShip(ctx, *args)
 
+
+# ----------------------------------REDDIT_BOT--------------------------------------------------------------------------
+@bot.command(pass_context=True)
+async def notTheOnion(ctx, *args):
+    await reddit_bot.notTheOnion(ctx, *args)
 
 # -------------------------------------TIMERS---------------------------------------------------------------------------
 async def randombjevent():
@@ -179,9 +219,26 @@ async def randombjevent():
         message = await bot.send_message(channel, embed=testEmbed)
         await bot.add_reaction(message, "🅱")
 
-
 bot.loop.create_task(randombjevent())
 
+async def randomchronoevent():
+    await bot.wait_until_ready()
+    channel = discord.Object(id='233229470062870529')
+    while not bot.is_closed:
+        with urllib.request.urlopen("https://api.chrono.gg/shop") as url:
+            data = json.loads(url.read().decode())
+            firstId = data[0]['_id']
+            f = open('/home/pi/Documents/glaelbot/chronoshopid.txt', 'r+')
+            fileId = f.read()
+
+            if fileId != firstId:
+                await bot.send_message(channel, "New games were added to the chrono.gg shop: https://chrono.gg/shop")
+                f.seek(0)
+                f.write(firstId)
+            f.close()
+        await asyncio.sleep(3600)
+
+bot.loop.create_task(randomchronoevent())
 
 file = open("/home/pi/Documents/glaelbot/key.txt", "r")
 bot.run(file.read().rstrip('\n'))

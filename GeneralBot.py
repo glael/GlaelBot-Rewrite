@@ -98,10 +98,13 @@ class GeneralBot:
         small_image = cv2.imread('/home/pi/Documents/glaelbot/watermark.png')
         url = message.attachments[0]["url"]
         response = requests.get(url, stream=True)
-        name = url[-5:]
+        name = '/home/pi/Documents/glaelbot/' + url[-5:]
+        print(name + ' file attempting to write to')
         with open(name, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         del response
+
+        print('successfully written file')
 
         large_image = cv2.imread(name)
 
