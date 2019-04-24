@@ -76,6 +76,10 @@ async def on_message(message):
         await general_bot.add_reaction(message, "gentoo", "231823001912475648")
     if "void" in message.content.lower():
         await general_bot.add_reaction(message, "void", "231823001912475648")
+    if message.content.lower() == "rigged":
+        await general_bot.add_reaction(message, "carat", "231823001912475648")
+    if "opel" in message.content.lower():
+        await general_bot.add_reaction(message, "opel", "231823001912475648")
     if "owo" in message.content.lower() or "o wo" in message.content.lower() or "ow o" in message.content.lower() or "o w o" in message.content.lower():
         await general_bot.add_reaction(message, "owo", "231823001912475648")
     if len(message.attachments) == 1 and "height" in message.attachments[0] and "width" in message.attachments[0] and (message.attachments[0]["filename"].endswith(".png") or message.attachments[0]["filename"].endswith(".jpg")):

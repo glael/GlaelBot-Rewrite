@@ -34,7 +34,7 @@ class EconomyBot:
             message += "Hi! For your first visit, you receive 50 bj$. Enter this same command again in 24h or more to receive more bj$.\n "
         elif last_time + datetime.timedelta(hours=24) >= curr_time:
             message += "You already have your bj$ for today. Try again later (after "
-            message += (last_time + datetime.timedelta(hours=1)).strftime("%H:%M") + ").\n"
+            message += (last_time + datetime.timedelta(hours=2)).strftime("%H:%M") + ").\n"
         else:
             self.economy_manager.increase_balance_of_player(sender_id, 100, sender_name)
             self.economy_manager.reset_last_time_economy_received(sender_id, sender_name)
