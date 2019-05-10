@@ -47,6 +47,9 @@ def update_db(message):
 @bot.event
 async def on_message(message):
     if bot._skip_check(message.author, bot.user):  											# don't check on yourself
+        if message.content.lower()[0:4] == "echo":
+            await bot.send_message(message.channel, message.content[4:])
+        print("selfcheck")
         return
     if message.channel.id == "433179719471726602":											# ignore discordrpg channel
         return
