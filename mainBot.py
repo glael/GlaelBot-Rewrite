@@ -61,6 +61,8 @@ async def on_message(message):
         await general_bot.add_reaction(message, "plopworst", "223911633682956290")
     if "(╯°□°）╯︵ ┻━┻" in message.content:												# tableflip => put table back
         await bot.send_message(message.channel, "┬─┬ノ( º _ ºノ)")
+    if message.content.lower() == ">:(" or message.content.lower() == ">:c":  											# "mekker" => reply with goat image
+        await general_bot.add_reaction(message, "angery", "223911633682956290")
     if "mekker".lower() in message.content.lower():  											# "mekker" => reply with goat image
         await bot.send_file(message.channel, "/home/pi/Documents/glaelbot/goat.jpg")
     if "filii" in message.content.lower():  												# "filii" => reply with poop emoji
@@ -71,20 +73,36 @@ async def on_message(message):
         await general_bot.add_reaction(message, "planb", "231823001912475648")
     if "triggered" in message.content.lower():												# "triggered" => reply with reee emoji
         await general_bot.add_reaction(message, "reee", "231823001912475648")
+    if "jojo" in message.content.lower():
+        await general_bot.add_reaction(message, "joshit", "231823001912475648")
     if "wifi" in message.content.lower():												# "wifi" => reply with feelsUhasseltMan emoji
         await general_bot.add_reaction(message, "FeelsUhasseltMan", "231823001912475648")
     if "arch" in message.content.lower():
         await general_bot.add_reaction(message, "arch", "231823001912475648")
     if "gentoo" in message.content.lower():
         await general_bot.add_reaction(message, "gentoo", "231823001912475648")
+    if "perl" in message.content.lower():
+        await general_bot.add_reaction(message, "perl", "231823001912475648")
+    if "google" in message.content.lower():
+        await general_bot.add_reaction(message, "goolag", "231823001912475648")
+    if "facebook" in message.content.lower() or "FB_IMG_" in message.content:
+        await general_bot.add_reaction(message, "facebad", "231823001912475648")
     if "void" in message.content.lower():
         await general_bot.add_reaction(message, "void", "231823001912475648")
+    if "eend" in message.content.lower():
+        await general_bot.add_reaction(message, "wceend", "231823001912475648")
+    if "ubuntu" in message.content.lower():
+        await general_bot.add_reaction(message, "ubuntu", "231823001912475648")
     if message.content.lower() == "rigged":
         await general_bot.add_reaction(message, "carat", "231823001912475648")
+    if "😂" in message.content.lower():
+        await general_bot.add_reaction(message, "nojoy", "231823001912475648")
     if "opel" in message.content.lower():
         await general_bot.add_reaction(message, "opel", "231823001912475648")
     if "owo" in message.content.lower() or "o wo" in message.content.lower() or "ow o" in message.content.lower() or "o w o" in message.content.lower():
         await general_bot.add_reaction(message, "owo", "231823001912475648")
+    if len(message.attachments) > 0 and message.channel.id == "224930984762540032" and message.author.id == "156329412126572544":
+        await general_bot.add_reaction(message, "9gag", "231823001912475648")
     if len(message.attachments) == 1 and "height" in message.attachments[0] and "width" in message.attachments[0] and (message.attachments[0]["filename"].endswith(".png") or message.attachments[0]["filename"].endswith(".jpg")):
         await general_bot.ifunny_test(message)												# check if ifunny logo is present (currently broken)
     update_db(message)
@@ -96,6 +114,9 @@ async def on_message(message):
 async def on_reaction_add(reaction, user):
     if bot._skip_check(user, bot.user):  # don't check on yourself
         return
+    # NO JOY
+    if "😂" in reaction.emoji:
+        await general_bot.add_reaction(reaction.message, "nojoy", "231823001912475648")
     # COIN DROP
     if len(reaction.message.embeds) == 1 and reaction.message.embeds[0]["title"] == "Coin Drop":
         await bot.delete_message(reaction.message)
