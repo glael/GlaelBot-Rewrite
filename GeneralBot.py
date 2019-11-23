@@ -13,13 +13,13 @@ class GeneralBot:
         self.bot = in_bot
 
     async def pepe(self, ctx, *args):
-        await self.bot.send_file(ctx.message.channel, random.choice(glob.glob("/home/pi/Documents/glaelbot/pepes/*")))
+        await self.bot.send_file(ctx.message.channel, random.choice(glob.glob("/home/glael/glaelbot/pepes/*")))
 
     async def eyebleach(self, ctx, *args):
-        await self.bot.send_file(ctx.message.channel, random.choice(glob.glob("/home/pi/Documents/glaelbot/eyebleach/*")))
+        await self.bot.send_file(ctx.message.channel, random.choice(glob.glob("/home/glael/glaelbot/eyebleach/*")))
 
     async def smug(self, ctx, *args):
-        await self.bot.send_file(ctx.message.channel, random.choice(glob.glob("/home/pi/Documents/glaelbot/smug/*")))
+        await self.bot.send_file(ctx.message.channel, random.choice(glob.glob("/home/glael/glaelbot/smug/*")))
 
     async def reverse(self, ctx, *args):
         result = ""
@@ -29,9 +29,9 @@ class GeneralBot:
 
     async def fortune(self, ctx, *args):
         if len(args)>0 and args[0] == "-o":
-            string = subprocess.run(["/usr/games/fortune -o -n 300 -s"], stdout=subprocess.PIPE, shell=True).stdout
+            string = subprocess.run(["/usr/bin/fortune -o -n 300 -s"], stdout=subprocess.PIPE, shell=True).stdout
         else:
-            string = subprocess.run(["/usr/games/fortune -n 300 -s"], stdout=subprocess.PIPE, shell=True).stdout
+            string = subprocess.run(["/usr/bin/fortune -n 300 -s"], stdout=subprocess.PIPE, shell=True).stdout
         await self.bot.say(string.decode())
 
     async def eightBall(self, ctx, *args):
@@ -77,6 +77,8 @@ class GeneralBot:
 
     async def echo(self, ctx, *args):
         if len(args) > 0:
+            if len(args) > 4 and args[0].lower() == "echo" and args[1].lower() == "echo" and args[2].lower() == "echo" and args[3].lower() == "echo" and args[4].lower() == "echo":
+                return await self.bot.say("<@" + str(ctx.message.author.id) + ">" + " nee, ga dood.")
             i = ""
             for a in range(len(args)):
                 i += args[a]
@@ -92,6 +94,14 @@ class GeneralBot:
             if a.name == reaction_string and a.server.id == server_string:
                 break
         await self.bot.add_reaction(message, a)
+
+    async def remove_reaction(self, message, reaction_string, server_string):
+        emoji = self.bot.get_all_emojis()
+        while True:
+            a = next(emoji)
+            if a.name == reaction_string and a.server.id == server_string:
+                break
+        await self.bot.remove_reaction(message, a, message.server.me)
 
     async def ifunny_test(self, message):
         method = cv2.TM_SQDIFF_NORMED

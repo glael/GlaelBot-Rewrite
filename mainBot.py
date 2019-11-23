@@ -23,7 +23,7 @@ battleship_bot = BattleshipBot(bot)
 reddit_bot = RedditBot(bot, economy_bot)
 minesweeper_bot = MinesweeperBot(bot)
 
-conn = sqlite3.connect('/home/pi/Documents/glaelbot/stats.db')
+conn = sqlite3.connect('/home/glael/glaelbot/stats.db')
 
 # -----------------------------------GENERAL STUFF----------------------------------------------------------------------
 @bot.event
@@ -48,7 +48,10 @@ def update_db(message):
 async def on_message(message):
     if bot._skip_check(message.author, bot.user):  											# don't check on yourself
         if message.content.lower()[0:4] == "echo":
-            await bot.send_message(message.channel, message.content[4:])
+            if message.content.lower()[0:24] != "echo echo echo echo echo":
+                await bot.send_message(message.channel, message.content[4:])
+            else:
+                await bot.send_message(message.channel, "<@" + str(message.author.id) + ">" + " nee, ga dood.")
         print("selfcheck")
         return
     if message.channel.id == "433179719471726602":											# ignore discordrpg channel
@@ -64,7 +67,7 @@ async def on_message(message):
     if message.content.lower() == ">:(" or message.content.lower() == ">:c":  											# "mekker" => reply with goat image
         await general_bot.add_reaction(message, "angery", "223911633682956290")
     if "mekker".lower() in message.content.lower():  											# "mekker" => reply with goat image
-        await bot.send_file(message.channel, "/home/pi/Documents/glaelbot/goat.jpg")
+        await bot.send_file(message.channel, "/home/glael/glaelbot/goat.jpg")
     if "filii" in message.content.lower():  												# "filii" => reply with poop emoji
         await bot.add_reaction(message, "💩")
     if ("linux" in message.content.lower()) and not ("gnu" in message.content.lower()):							# "linux" without "gnu" => reply with stallman emoji
@@ -91,6 +94,10 @@ async def on_message(message):
         await general_bot.add_reaction(message, "void", "231823001912475648")
     if "eend" in message.content.lower():
         await general_bot.add_reaction(message, "wceend", "231823001912475648")
+    if "kde" in message.content.lower():
+        await general_bot.add_reaction(message, "kde", "231823001912475648")
+    if "bosch" in message.content.lower():
+        await general_bot.add_reaction(message, "bosch", "231823001912475648")
     if "ubuntu" in message.content.lower():
         await general_bot.add_reaction(message, "ubuntu", "231823001912475648")
     if message.content.lower() == "rigged":
@@ -119,8 +126,10 @@ async def on_reaction_add(reaction, user):
         await general_bot.add_reaction(reaction.message, "nojoy", "231823001912475648")
     # COIN DROP
     if len(reaction.message.embeds) == 1 and reaction.message.embeds[0]["title"] == "Coin Drop":
+        timestamp = reaction.message.timestamp
+        channel = reaction.message.channel
         await bot.delete_message(reaction.message)
-        await economy_bot.coin_drop(user.id, user.name)
+        await economy_bot.coin_drop(user.id, user.name, timestamp, channel)
     # GALGJE
     elif len(reaction.message.embeds) == 1 and reaction.message.embeds[0]["title"] == "Galgje":
         await galgje_bot.user_reacted(reaction, user)
@@ -135,6 +144,11 @@ async def on_reaction_add(reaction, user):
         await reddit_bot.user_reacted(reaction, user)
     return
 
+
+@bot.event
+async def on_reaction_remove(reaction, user):
+    if "😂" in reaction.emoji:
+        await general_bot.remove_reaction(reaction.message, "nojoy", "231823001912475648")
 
 # -----------------------------------GENERAL_BOT------------------------------------------------------------------------
 @bot.command(pass_context=True)
@@ -179,6 +193,11 @@ async def fortune(ctx, *args):
 @bot.command(pass_context=True)
 async def eightBall(ctx, *args):
     await general_bot.eightBall(ctx, *args)
+
+@bot.command(pass_context=True)
+async def blinCat(ctx, *args):
+    await bot.send_file(ctx.message.channel, "/home/glael/glaelbot/blincat.jpg")
+
 
 # -----------------------------------ECONOMY_BOT------------------------------------------------------------------------
 @bot.command(pass_context=True)
@@ -238,6 +257,7 @@ async def notTheOnion(ctx, *args):
 async def randombjevent():
     await bot.wait_until_ready()
     channel = discord.Object(id='367274120930394112')
+#    channel = discord.Object(id='372472584228438017')
     while not bot.is_closed:
         await asyncio.sleep(random.randint(3600, 9000))  # task runs at most every hour, probably less. Will always run on startup
         testEmbed = discord.Embed()
@@ -246,6 +266,7 @@ async def randombjevent():
         testEmbed.description = "Oops! i dropped some coins!\nThe first to react with 🅱 gets 50 free bj$."
         message = await bot.send_message(channel, embed=testEmbed)
         await bot.add_reaction(message, "🅱")
+#        await asyncio.sleep(random.randint(3600, 9000))  # task runs at most every hour, probably less. Will always run on startup
 
 bot.loop.create_task(randombjevent())
 
@@ -256,7 +277,7 @@ async def randomchronoevent():
         with urllib.request.urlopen("https://api.chrono.gg/shop") as url:
             data = json.loads(url.read().decode())
             firstId = data[0]['_id']
-            f = open('/home/pi/Documents/glaelbot/chronoshopid.txt', 'r+')
+            f = open('/home/glael/glaelbot/chronoshopid.txt', 'r+')
             fileId = f.read()
 
             if fileId != firstId:
@@ -268,5 +289,5 @@ async def randomchronoevent():
 
 bot.loop.create_task(randomchronoevent())
 
-file = open("/home/pi/Documents/glaelbot/key.txt", "r")
+file = open("/home/glael/glaelbot/key.txt", "r")
 bot.run(file.read().rstrip('\n'))

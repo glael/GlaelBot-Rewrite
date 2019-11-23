@@ -34,7 +34,7 @@ class EconomyBot:
             message += "Hi! For your first visit, you receive 50 bj$. Enter this same command again in 24h or more to receive more bj$.\n "
         elif last_time + datetime.timedelta(hours=24) >= curr_time:
             message += "You already have your bj$ for today. Try again later (after "
-            message += (last_time + datetime.timedelta(hours=2)).strftime("%H:%M") + ").\n"
+            message += (last_time + datetime.timedelta(hours=0)).strftime("%H:%M") + ").\n"
         else:
             self.economy_manager.increase_balance_of_player(sender_id, 100, sender_name)
             self.economy_manager.reset_last_time_economy_received(sender_id, sender_name)
@@ -42,7 +42,7 @@ class EconomyBot:
         message += "You currently have " + str(self.economy_manager.get_balance_of_player(sender_id)) + " bj$."
         await self.bot.send_message(ctx.message.channel, message)
         print("message sent")
-        rank = open('/home/pi/Documents/glaelbot/rankings.txt', 'w')
+        rank = open('/home/glael/glaelbot/rankings.txt', 'w')
         rank.write(self.economy_manager.get_list_of_balances())
 
     async def bjrank(self, ctx, *args):
@@ -87,7 +87,9 @@ class EconomyBot:
         rank = open('/home/pi/Documents/glaelbot/rankings.txt', 'w')
         rank.write(self.economy_manager.get_list_of_balances())
 
-    async def coin_drop(self, player_id, player_name):
+    async def coin_drop(self, player_id, player_name, timestamp, channel):
+        difference = datetime.datetime.utcnow() - timestamp
+        await self.bot.send_message(channel, "Coin drop claimed after " + (datetime.datetime.utcfromtimestamp(0) + difference).strftime('%H:%M:%S') + " by " + player_name + ".")
         self.economy_manager.increase_balance_of_player(player_id, 50, player_name)
 
     async def reaction_added(self, reaction, user):

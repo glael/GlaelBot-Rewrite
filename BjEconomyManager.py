@@ -9,7 +9,7 @@ class BjEconomyManager:
 
     def read_economy(self):
         try:
-            f = open('/home/pi/Documents/glaelbot/economy.txt', 'rb')
+            f = open('/home/glael/glaelbot/economy.txt', 'rb')
             return pickle.load(f)
         except EOFError:
             print("FileIO error: the file was empty " + 'economy.txt')
@@ -19,7 +19,7 @@ class BjEconomyManager:
             return []
 
     def store_economy(self):
-        with open('/home/pi/Documents/glaelbot/economy.txt', 'wb') as output:
+        with open('/home/glael/glaelbot/economy.txt', 'wb') as output:
             pickle.dump(self.economyDict, output, pickle.HIGHEST_PROTOCOL)
             print("dumped")
         print("test")

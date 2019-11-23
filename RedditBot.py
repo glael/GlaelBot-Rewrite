@@ -7,7 +7,7 @@ class RedditBot:
         self.bot = in_bot
         self.economy_bot = in_economy_bot
         self.this_title_is_theonion = {}
-        pwdFile = open("/home/pi/Documents/glaelbot/redditPwd.txt")
+        pwdFile = open("/home/glael/glaelbot/redditPwd.txt")
         redditPwd = pwdFile.read(8)
         self.reddit = praw.Reddit(client_id='19_lMJwVz3VNeg', client_secret='boVVSk__nNPPdmRqiuCGtbleuIY', username='MCglael', password=redditPwd, user_agent='test_script by glael')
 
