@@ -88,7 +88,7 @@ async def on_message(message):
         await general_bot.add_reaction(message, "perl", "231823001912475648")
     if "google" in message.content.lower():
         await general_bot.add_reaction(message, "goolag", "231823001912475648")
-    if "facebook" in message.content.lower() or "FB_IMG_" in message.content:
+    if "facebook" in message.content.lower() or "FB_IMG_" in message.content or len(message.attachments) > 0 and "FB_IMG_" in message.attachments[0]["url"]:
         await general_bot.add_reaction(message, "facebad", "231823001912475648")
     if "void" in message.content.lower():
         await general_bot.add_reaction(message, "void", "231823001912475648")
@@ -96,8 +96,12 @@ async def on_message(message):
         await general_bot.add_reaction(message, "wceend", "231823001912475648")
     if "kde" in message.content.lower():
         await general_bot.add_reaction(message, "kde", "231823001912475648")
+    if "nvidia" in message.content.lower() or "novideo" in message.content.lower():
+        await general_bot.add_reaction(message, "novideo", "231823001912475648")
     if "bosch" in message.content.lower():
         await general_bot.add_reaction(message, "bosch", "231823001912475648")
+    if "hln" in message.content.lower() or "het laatste nieuws" in message.content.lower():
+        await general_bot.add_reaction(message, "clickbait", "231823001912475648")
     if "ubuntu" in message.content.lower():
         await general_bot.add_reaction(message, "ubuntu", "231823001912475648")
     if message.content.lower() == "rigged":
