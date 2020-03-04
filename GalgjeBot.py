@@ -15,7 +15,7 @@ class GalgjeBot:
         galgje_embed.colour = discord.Colour.blue()
 
         description = "`"
-        f = open('/home/pi/Documents/glaelbot/groeneBoekje.txt')
+        f = open('/home/glael/glaelbot/groeneBoekje.txt')
         lines = f.readlines()
         for i in range(len(lines[next_galgje_word]) - 1):
             description += "_ "
@@ -32,7 +32,7 @@ class GalgjeBot:
         description = reaction.message.embeds[0]["description"]
         reacted_letter = self.convert_emoji_to_text(reaction.emoji)
 
-        f = open('/home/pi/Documents/glaelbot/groeneBoekje.txt')
+        f = open('/home/glael/glaelbot/groeneBoekje.txt')
         lines = f.readlines()
         if reacted_letter.lower() not in lines[self.current_galgje_word[reaction.message.id]]:
             i = description.rfind("\n")

@@ -60,6 +60,8 @@ async def on_message(message):
         await battleship_bot.evalMessage(message)
     if message.content == "XD" or " XD" in message.content or "XD " in message.content:
         await bot.send_message(message.channel, "*ECKSDEE")
+    if "geld" in message.content.lower() or "money" in message.content.lower() or "euro " in message.content.lower() or message.content.lower().endswith("euro"):
+        await bot.send_message(message.channel, "*capitalism tokens")
     if "plop" in message.content.lower() or "kabouter" in message.content.lower():							# "plop" or "kabouter" => react with plopworst emoji
         await general_bot.add_reaction(message, "plopworst", "223911633682956290")
     if "(╯°□°）╯︵ ┻━┻" in message.content:												# tableflip => put table back
@@ -114,6 +116,9 @@ async def on_message(message):
         await general_bot.add_reaction(message, "owo", "231823001912475648")
     if len(message.attachments) > 0 and message.channel.id == "224930984762540032" and message.author.id == "156329412126572544":
         await general_bot.add_reaction(message, "9gag", "231823001912475648")
+    if (len(message.attachments) > 0 or "https://" in message.content or "http://" in message.content) and message.channel.id == "224930984762540032" and message.author.id == "228428308088356864": 
+        print("reeeee why it no work")
+        await general_bot.add_reaction(message, "tiktok", "231823001912475648")
     if len(message.attachments) == 1 and "height" in message.attachments[0] and "width" in message.attachments[0] and (message.attachments[0]["filename"].endswith(".png") or message.attachments[0]["filename"].endswith(".jpg")):
         await general_bot.ifunny_test(message)												# check if ifunny logo is present (currently broken)
     update_db(message)
@@ -127,7 +132,8 @@ async def on_reaction_add(reaction, user):
         return
     # NO JOY
     if "😂" in reaction.emoji:
-        await general_bot.add_reaction(reaction.message, "nojoy", "231823001912475648")
+#        await general_bot.add_reaction(reaction.message, "nojoy", "231823001912475648")
+        await bot.remove_reaction(reaction.message, reaction.emoji, user)
     # COIN DROP
     if len(reaction.message.embeds) == 1 and reaction.message.embeds[0]["title"] == "Coin Drop":
         timestamp = reaction.message.timestamp
