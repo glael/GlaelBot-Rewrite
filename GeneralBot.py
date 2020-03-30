@@ -105,10 +105,10 @@ class GeneralBot:
 
     async def ifunny_test(self, message):
         method = cv2.TM_SQDIFF_NORMED
-        small_image = cv2.imread('/home/pi/Documents/glaelbot/watermark.png')
+        small_image = cv2.imread('/home/glael/glaelbot/watermark.png')
         url = message.attachments[0]["url"]
         response = requests.get(url, stream=True)
-        name = '/home/pi/Documents/glaelbot/' + url[-5:]
+        name = '/home/glael/glaelbot/' + url[-5:]
         print(name + ' file attempting to write to')
         with open(name, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
@@ -123,4 +123,4 @@ class GeneralBot:
         mn, B, mnLoc, A = cv2.minMaxLoc(result)
         os.remove(name)
         if mn <= 0.4:
-            await self.bot.send_file(message.channel, "/home/pi/Documents/glaelbot/memePolice.jpg")
+            await self.bot.send_file(message.channel, "/home/glael/glaelbot/memePolice.jpg")

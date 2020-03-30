@@ -60,7 +60,7 @@ async def on_message(message):
         await battleship_bot.evalMessage(message)
     if message.content == "XD" or " XD" in message.content or "XD " in message.content:
         await bot.send_message(message.channel, "*ECKSDEE")
-    if "geld" in message.content.lower() or "money" in message.content.lower() or "euro " in message.content.lower() or message.content.lower().endswith("euro"):
+    if "geld" in message.content.lower() or "money" in message.content.lower() or "euro " in message.content.lower() or message.content.lower().endswith("euro") or "dollar" in message.content.lower():
         await bot.send_message(message.channel, "*capitalism tokens")
     if "plop" in message.content.lower() or "kabouter" in message.content.lower():							# "plop" or "kabouter" => react with plopworst emoji
         await general_bot.add_reaction(message, "plopworst", "223911633682956290")
@@ -82,7 +82,7 @@ async def on_message(message):
         await general_bot.add_reaction(message, "joshit", "231823001912475648")
     if "wifi" in message.content.lower():												# "wifi" => reply with feelsUhasseltMan emoji
         await general_bot.add_reaction(message, "FeelsUhasseltMan", "231823001912475648")
-    if "arch" in message.content.lower():
+    if "arch" in message.content.lower() and message.channel.id != "691052676170907748":
         await general_bot.add_reaction(message, "arch", "231823001912475648")
     if "gentoo" in message.content.lower():
         await general_bot.add_reaction(message, "gentoo", "231823001912475648")
@@ -112,6 +112,8 @@ async def on_message(message):
         await general_bot.add_reaction(message, "nojoy", "231823001912475648")
     if "opel" in message.content.lower():
         await general_bot.add_reaction(message, "opel", "231823001912475648")
+    if "magic" in message.content.lower() and message.channel.id == "691052676170907748":
+        await general_bot.add_reaction(message, "toveren", "418130378243440641")                                                                               ##########GLAEL 2 SERVER ID
     if "owo" in message.content.lower() or "o wo" in message.content.lower() or "ow o" in message.content.lower() or "o w o" in message.content.lower():
         await general_bot.add_reaction(message, "owo", "231823001912475648")
     if len(message.attachments) > 0 and message.channel.id == "224930984762540032" and message.author.id == "156329412126572544":
