@@ -33,12 +33,12 @@ class EconomyBot:
             self.economy_manager.reset_last_time_economy_received(sender_id, sender_name)
             message += "Hi! For your first visit, you receive 50 bj$. Enter this same command again in 24h or more to receive more bj$.\n "
         elif last_time + datetime.timedelta(hours=24) >= curr_time:
-            message += "You already have your bj$ for today. Try again later (after "
+            message += "You already printed money today. Too much inflation. Try again later (after "
             message += (last_time + datetime.timedelta(hours=0)).strftime("%H:%M") + ").\n"
         else:
             self.economy_manager.increase_balance_of_player(sender_id, 100, sender_name)
             self.economy_manager.reset_last_time_economy_received(sender_id, sender_name)
-            message += "You received 100 bj$. Return tomorrow for more!\n"
+            message += "Brrr Brrr Brrr Brrr. You printed 100 bj$. Return tomorrow for more!\n"
         message += "You currently have " + str(self.economy_manager.get_balance_of_player(sender_id)) + " bj$."
         await self.bot.send_message(ctx.message.channel, message)
         print("message sent")

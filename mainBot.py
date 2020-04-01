@@ -28,7 +28,7 @@ conn = sqlite3.connect('/home/glael/glaelbot/stats.db')
 # -----------------------------------GENERAL STUFF----------------------------------------------------------------------
 @bot.event
 async def on_ready():
-    await bot.change_presence(game=discord.Game(name="glael.ddns.net"))
+    await bot.change_presence(game=discord.Game(name="GlaelBot go brrr"))
     battleship_bot.generateEmoji()
     minesweeper_bot.generateEmoji()
     print("starting...")
@@ -123,6 +123,8 @@ async def on_message(message):
         await general_bot.add_reaction(message, "tiktok", "231823001912475648")
     if len(message.attachments) == 1 and "height" in message.attachments[0] and "width" in message.attachments[0] and (message.attachments[0]["filename"].endswith(".png") or message.attachments[0]["filename"].endswith(".jpg")):
         await general_bot.ifunny_test(message)												# check if ifunny logo is present (currently broken)
+    if "<<@&443025151450415108>" in message.content:
+        await bot.send_message(message.channel, message.content.replace("<@&443025151450415108>", "@"))
     update_db(message)
     await bot.process_commands(message)
     return
@@ -197,6 +199,9 @@ async def star(ctx, *args):
 async def ping(ctx, *args):
     await bot.say("pong")
 
+@bot.command(pass_context=True)
+async def print(ctx, *args):
+    await bot.send_message(ctx.message.channel, content="Brrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr", tts=True)
 
 @bot.command(pass_context=True)
 async def fortune(ctx, *args):
