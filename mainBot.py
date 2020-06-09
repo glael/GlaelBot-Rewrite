@@ -47,12 +47,11 @@ def update_db(message):
 @bot.event
 async def on_message(message):
     if bot._skip_check(message.author, bot.user):  											# don't check on yourself
-        if message.content.lower()[0:4] == "echo":
+        if message.content.lower()[0:5] == "echo ":
             if message.content.lower()[0:24] != "echo echo echo echo echo":
                 await bot.send_message(message.channel, message.content[4:])
             else:
                 await bot.send_message(message.channel, "<@" + str(message.author.id) + ">" + " nee, ga dood.")
-        print("selfcheck")
         return
     if message.channel.id == "433179719471726602":											# ignore discordrpg channel
         return
@@ -70,6 +69,8 @@ async def on_message(message):
         await general_bot.add_reaction(message, "angery", "223911633682956290")
     if "mekker".lower() in message.content.lower():  											# "mekker" => reply with goat image
         await bot.send_file(message.channel, "/home/glael/glaelbot/goat.jpg")
+    if "maasmekka" in message.content.lower():
+        await bot.send_file(message.channel, "/home/glael/glaelbot/vbl-maasmekka.png")
     if "filii" in message.content.lower():  												# "filii" => reply with poop emoji
         await bot.add_reaction(message, "💩")
     if ("linux" in message.content.lower()) and not ("gnu" in message.content.lower()):							# "linux" without "gnu" => reply with stallman emoji
@@ -119,8 +120,9 @@ async def on_message(message):
     if len(message.attachments) > 0 and message.channel.id == "224930984762540032" and message.author.id == "156329412126572544":
         await general_bot.add_reaction(message, "9gag", "231823001912475648")
     if (len(message.attachments) > 0 or "https://" in message.content or "http://" in message.content) and message.channel.id == "224930984762540032" and message.author.id == "228428308088356864": 
-        print("reeeee why it no work")
         await general_bot.add_reaction(message, "tiktok", "231823001912475648")
+    if (len(message.attachments) > 0 or "https://" in message.content or "http://" in message.content) and message.channel.id == "224930984762540032" and message.author.id == "283334089874997249": 
+        await general_bot.add_reaction(message, "xd", "418130378243440641")                                                                               ##########GLAEL 2 SERVER ID
     if len(message.attachments) == 1 and "height" in message.attachments[0] and "width" in message.attachments[0] and (message.attachments[0]["filename"].endswith(".png") or message.attachments[0]["filename"].endswith(".jpg")):
         await general_bot.ifunny_test(message)												# check if ifunny logo is present (currently broken)
     if "<<@&443025151450415108>" in message.content:
