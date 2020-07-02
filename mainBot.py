@@ -79,7 +79,10 @@ async def on_message(message):
         await general_bot.add_reaction(message, "planb", "231823001912475648")
     if "triggered" in message.content.lower():												# "triggered" => reply with reee emoji
         await general_bot.add_reaction(message, "reee", "231823001912475648")
-    if "jojo" in message.content.lower():
+    jojolist = ["jojo", "nigerundayo", "it was me, ", "nani", "yare yare daze", "what the hell did you just say about my hair", "my name is yoshikage kira", "za hando", "za warudo", "emerald splash", "rerorero", "lerolero", "rero rero", "lero lero", "awaken my masters", "oh? you're approaching me?", "muda muda", "ora ora", "next you're gonna say", "next you are going to say", "next you'll say", "next you're going to say", "your next line is"]
+    if any(word in message.content.lower() for word in jojolist):
+        await general_bot.add_reaction(message, "joshit", "231823001912475648")
+    if len(message.embeds) == 1 and "jojo" in message.embeds[0]["description"].lower():
         await general_bot.add_reaction(message, "joshit", "231823001912475648")
     if "wifi" in message.content.lower():												# "wifi" => reply with feelsUhasseltMan emoji
         await general_bot.add_reaction(message, "FeelsUhasseltMan", "231823001912475648")
@@ -113,6 +116,8 @@ async def on_message(message):
         await general_bot.add_reaction(message, "nojoy", "231823001912475648")
     if "opel" in message.content.lower():
         await general_bot.add_reaction(message, "opel", "231823001912475648")
+    if "red star os" in message.content.lower() or "redstar os" in message.content.lower():
+        await general_bot.add_reaction(message, "redstar", "418130378243440641")                                                                               ##########GLAEL 2 SERVER ID
     if "magic" in message.content.lower() and message.channel.id == "691052676170907748":
         await general_bot.add_reaction(message, "toveren", "418130378243440641")                                                                               ##########GLAEL 2 SERVER ID
     if "owo" in message.content.lower() or "o wo" in message.content.lower() or "ow o" in message.content.lower() or "o w o" in message.content.lower():
